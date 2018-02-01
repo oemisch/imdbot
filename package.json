@@ -1,0 +1,29 @@
+{
+  "name": "imdbot",
+  "version": "0.0.1",
+  "description": "A chatbot for our interactive media design group",
+  "main": "index.js",
+  "dependencies": {
+    "node-telegram-bot-api": "^0.30.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oemisch/imdbot.git"
+  },
+  "keywords": [
+    "bot",
+    "telegram",
+    "chatbot"
+  ],
+  "author": "Interactive Media Design Dieburg 2012 starters",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/oemisch/imdbot/issues"
+  },
+  "homepage": "https://github.com/oemisch/imdbot#readme"
+}
