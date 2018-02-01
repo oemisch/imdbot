@@ -4,6 +4,8 @@
   "description": "A chatbot for our interactive media design group",
   "main": "index.js",
   "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
     "node-telegram-bot-api": "^0.30.0"
   },
   "devDependencies": {},

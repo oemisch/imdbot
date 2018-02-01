@@ -1,31 +1,35 @@
 const TelegramBot = require('node-telegram-bot-api');
+const express = require('express');
+const bodyParser = require('body-parser');
+
+const history = require("./history.js");
+const nlp = require("./nlp.js");
 
 // replace the value below with the Telegram token you receive from @BotFather
 const token = process.env['TELEGRAM_BOT_TOKEN'];
-// const chatId = process.env['IMD_FUN_CHAT_ID']; // chatId is contained in requests
+const imdChatId = process.env['IMD_FUN_CHAT_ID'];
 
 // Create a bot that uses 'polling' to fetch new updates
 const bot = new TelegramBot(token, {polling: true});
 
-// Matches "/echo [whatever]"
-bot.onText(/\/echo (.+)/, (msg, match) => {
-  // 'msg' is the received Message from Telegram
-  // 'match' is the result of executing the regexp above on the text content
-  // of the message
+// initialize express for webhook routing
+const app = express();
 
-  const chatId = msg.chat.id;
-  const resp = match[1]; // the captured "whatever"
-
-  // send back the matched "whatever" to the chat
-  bot.sendMessage(chatId, resp);
+app.get("/api/v1/tldr", (req, res) => {
+  console.log("TLDR Request incoming", req);
+  res.sendStatus(200);
 });
 
-// Listen for any kind of message. There are different kinds of
-// messages.
+// Listen for any kind of message. There are different kinds of messages
 bot.on('message', (msg) => {
   const chatId = msg.chat.id;
+  history.add(msg);
 
-  console.log(msg.text);
-  // send a message to the chat acknowledging receipt of their message
-  // bot.sendMessage(chatId, 'Received your message');
+  if(msg.text.indexOf("tldr") != -1){
+    bot.sendMessage(chatId, nlp.analyzeHistory());
+  }
+});
+
+bot.on('polling_error', (error) => {
+  console.error(error);  // => 'EFATAL'
 });
