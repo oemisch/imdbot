@@ -3,7 +3,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const history = require("./history.js");
-const nlp = require("./nlp.js");
 
 // replace the value below with the Telegram token you receive from @BotFather
 const token = process.env['TELEGRAM_BOT_TOKEN'];
@@ -15,7 +14,7 @@ const bot = new TelegramBot(token, {polling: true});
 // initialize express for webhook routing
 const app = express();
 
-app.get("/api/v1/tldr", (req, res) => {
+app.get("/webhook/v1/tldr", (req, res) => {
   console.log("TLDR Request incoming", req);
   res.sendStatus(200);
 });
@@ -24,12 +23,16 @@ app.get("/api/v1/tldr", (req, res) => {
 bot.on('message', (msg) => {
   const chatId = msg.chat.id;
   history.add(msg);
-  console.log(msg);
+
   if(msg.text && msg.text.indexOf("tldr") != -1){
     bot.sendMessage(chatId, nlp.analyzeHistory(), { parse_mode: "Markdown" });
+  }
+
+  if(msg.text && (msg.text.toLowerCase().indexOf("aki") != -1 || msg.text.toLowerCase().indexOf("krajewski") != -1 || msg.text.toLowerCase().indexOf("andrea") != -1)){
+    bot.sendMessage(chatId, `Geht es um mich [${msg.from.first_name}](tg://user?id=${msg.from.id})?`, { parse_mode: "Markdown" });
   }
 });
 
 bot.on('polling_error', (error) => {
-  console.error(error);  // => 'EFATAL'
+  console.error(error);
 });
