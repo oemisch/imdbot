@@ -16,6 +16,13 @@ const history = {
       }
       self.messages.push(message);
     }
+  },
+  getRandomUser: function(){
+    var self = this;
+    if(self.messages.length > 0){
+      return self.messages[Math.round(Math.random()*(self.messages.length-1))].from;
+    }
+    return false;
   }
 };
 

@@ -11,7 +11,8 @@ const nlp = {
       }
     }
     //TODO: summarize text
-    return "Das kann ich noch nicht. Entwickle mich weiter!";
+    var randomUser = history.getRandomUser();
+    return `Das kann ich noch nicht. Entwickle mich weiter [${randomUser.first_name}](tg://user?id=${randomUser.id})!`;
   }
 };
 

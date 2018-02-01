@@ -24,9 +24,9 @@ app.get("/api/v1/tldr", (req, res) => {
 bot.on('message', (msg) => {
   const chatId = msg.chat.id;
   history.add(msg);
-
-  if(msg.text.indexOf("tldr") != -1){
-    bot.sendMessage(chatId, nlp.analyzeHistory());
+  console.log(msg);
+  if(msg.text && msg.text.indexOf("tldr") != -1){
+    bot.sendMessage(chatId, nlp.analyzeHistory(), { parse_mode: "Markdown" });
   }
 });
 
